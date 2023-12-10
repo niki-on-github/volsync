@@ -1,4 +1,4 @@
-name: serien-and-movie-planer
+name: container
 
 on:
   workflow_dispatch:
