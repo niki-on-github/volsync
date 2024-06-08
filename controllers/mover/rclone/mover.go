@@ -231,6 +231,9 @@ func (m *Mover) ensureJob(ctx context.Context, dataPVC *corev1.PersistentVolumeC
 		if m.paused {
 			parallelism = int32(0)
 		}
+		if m.latestMoverStatus.Result == "" {
+			parallelism = int32(0)
+		}
 		job.Spec.Parallelism = &parallelism
 
 		envVars := []corev1.EnvVar{
