@@ -122,6 +122,7 @@ func (m *Mover) Synchronize(ctx context.Context) (mover.Result, error) {
 	if m.isSource && m.latestMoverStatus.Result == "" {
 		m.logger.V(1).Info("skip initial backup")
 		m.latestMoverStatus.Result = volsyncv1alpha1.MoverResultSuccessful
+		m.latestMoverStatus.Logs = "skip initial backup"
 		return mover.Complete(), nil
 	}
 
