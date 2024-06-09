@@ -135,6 +135,12 @@ func (m *Mover) Synchronize(ctx context.Context) (mover.Result, error) {
 		return mover.InProgress(), err
 	}
 
+	if m.isSource && m.latestMoverStatus.Result == "" {
+		m.logger.V(1).Info("skip initial backup")
+		m.latestMoverStatus.Result = volsyncv1alpha1.MoverResultSuccessful
+		return mover.Complete(), nil
+	}
+
 	// Start mover Job
 	job, err := m.ensureJob(ctx, cachePVC, dataPVC, sa, repo, customCAObj)
 	if job == nil || err != nil {
@@ -303,9 +309,6 @@ func (m *Mover) ensureJob(ctx context.Context, cachePVC *corev1.PersistentVolume
 		job.Spec.BackoffLimit = &backoffLimit
 		parallelism := int32(1)
 		if m.paused {
-			parallelism = int32(0)
-		}
-		if m.isSource && m.latestMoverStatus.Result == "" {
 			parallelism = int32(0)
 		}
 		job.Spec.Parallelism = &parallelism
