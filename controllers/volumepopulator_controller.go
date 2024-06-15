@@ -857,7 +857,7 @@ func GetVolumePopulatorPVCPrime(ctx context.Context, c client.Client,
 }
 
 func getSnapshotInUseLabelKey(pvc *corev1.PersistentVolumeClaim) string {
-	return fmt.Sprintf("%s-%s", pvc.GetName(), "data")
+	return fmt.Sprintf("%s%s", utils.SnapInUseByVolumePopulatorLabelPrefix, pvc.UID)
 }
 
 func pvcHasReplicationDestinationDataSourceRef(pvc *corev1.PersistentVolumeClaim) bool {
