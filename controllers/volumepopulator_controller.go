@@ -834,7 +834,7 @@ func (r *VolumePopulatorReconciler) addOwnerReference(obj, owner metav1.Object) 
 }
 
 func getPVCPrimeName(pvc *corev1.PersistentVolumeClaim) string {
-	return fmt.Sprintf("%s-%s", populatorPvcPrefix, pvc.UID)
+	return fmt.Sprintf("%s-%s", pvc.GetName(), "data")
 }
 
 // Finds PVCPrime - will return nil if PVCPrime is not found
